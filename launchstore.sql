@@ -1,29 +1,28 @@
-CREATE TABLE "products" (
-  "id" SERIAL PRIMARY KEY,
-  "category_id" int UNIQUE,
-  "user_id" int UNIQUE,
-  "name" text NOT NULL,
-  "description" text NOT NULL,
-  "old_price" int,
-  "price" int NOT NULL,
-  "quantity" int DEFAULT 0,
-  "status" int DEFAULT 1,
-  "created_at" timestamp DEFAULT 'now()',
-  "updated_at" timestamp DEFAULT 'now()'
-);
+Table products {
+  id int [pk, increment]
+  category_id int
+  user_id int
+  name text [not null]
+  description text [not null]
+  old_price int
+  price int [not null]
+  quantity int [default: 0]
+  status int [default: 1]
+  created_at timestamp [default: 'now()']
+  updated_at timestamp [default: 'now()']
+}
 
-CREATE TABLE "categories" (
-  "id" SERIAL PRIMARY KEY,
-  "name" text NOT NULL
-);
+Table categories {
+  id int [pk, increment]
+  name text [not null]
+}
 
-CREATE TABLE "files" (
-  "id" SERIAL PRIMARY KEY,
-  "name" text,
-  "path" text NOT NULL,
-  "product_id" int UNIQUE
-);
+Table files {
+  id int [pk, increment]
+  name text
+  path text [not null]
+  product_id int
+}
 
-ALTER TABLE "products" ADD FOREIGN KEY ("category_id") REFERENCES "categories" ("id");
-
-ALTER TABLE "files" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
+Ref: products.category_id > categories.id
+Ref: files.product_id > products.id
