@@ -82,7 +82,7 @@ const PhotosUpload = {
         const div = document.createElement('div');
             div.classList.add('photo');
 
-            div.onclick = PhotosUpload.RemovePhoto;
+            div.onclick = PhotosUpload.removePhoto;
 
             div.appendChild(image);
 
@@ -96,13 +96,25 @@ const PhotosUpload = {
         button.innerHTML = "close"
         return button;
     },
-    RemovePhoto(event) {
+    removePhoto(event) {
         const photoDiv = event.target.parentNode;
         const photosArray = Array.from(PhotosUpload.preview.children);
         const index = photosArray.indexOf(photoDiv);
 
         PhotosUpload.files.splice(index, 1);
         PhotosUpload.input.files = PhotosUpload.getAllFiles();
+
+        photoDiv.remove();
+    },
+    removeOldPhoto(event) {
+        const photoDiv = event.target.parentNode;
+
+        if (photoDiv.id) {
+            const removedFiles = document.querySelector('input[name="removed_files"');
+            if(removedFiles) {
+                removedFiles.value += `${photoDiv.id},`
+            }
+        }
 
         photoDiv.remove();
     }
