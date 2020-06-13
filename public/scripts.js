@@ -200,6 +200,7 @@ const Validate = {
         div.classList.add('error');
         div.innerHTML = error;
         input.parentNode.appendChild(div);    
+        input.focus();
     },
     isEmail(value) {
         let error = null;
