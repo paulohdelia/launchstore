@@ -200,10 +200,9 @@ const Validate = {
         div.classList.add('error');
         div.innerHTML = error;
         input.parentNode.appendChild(div);    
-        input.focus();
     },
     isEmail(value) {
-        let error = null
+        let error = null;
 
         const mailFormat = /^\w+([\.-]?\w+)*@\w+([\.]?\w+)*(\.\w{2,3})+$/
 
@@ -215,5 +214,35 @@ const Validate = {
             error, 
             value
         };
-    }
+    },
+    isCpfCnpj(value) {
+        let error = null;
+
+        const cleanValues = value.replace(/\D/g, '');
+
+        if(cleanValues.length > 11 && cleanValues.length !== 14) {
+            error = 'CPNJ inválido';
+        } else if (cleanValues.length < 12 && cleanValues.length !== 11) {
+            error = 'CPF incorreto';
+        }
+
+        return {
+            error, 
+            value
+        };
+    },
+    isCep(value) {
+        let error = null;
+
+        const cleanValues = value.replace(/\D/g, '');
+
+        if(cleanValues.length !== 8) {
+            error = 'CEP inválido';
+        } 
+
+        return {
+            error, 
+            value
+        };
+    },
 }
