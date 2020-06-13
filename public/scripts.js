@@ -180,12 +180,27 @@ const Lightbox = {
 
 const Validate = {
     apply(input, func) {
+        Validate.clearErrors(input);
+
         let results = Validate[func](input.value);
         input.value = results.value;
 
         if (results.error) {
-            alert(results.error);
+            Validate.displayError(input, results.error);
         }
+    },
+    clearErrors(input) {
+        const errorDiv = input.parentNode.querySelector(".error");
+        if (errorDiv) {
+            errorDiv.remove();
+        }
+    },
+    displayError(input, error) {
+        const div = document.createElement('div');
+        div.classList.add('error');
+        div.innerHTML = error;
+        input.parentNode.appendChild(div);    
+        input.focus();
     },
     isEmail(value) {
         let error = null
