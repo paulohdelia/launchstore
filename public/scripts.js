@@ -11,6 +11,32 @@ const Mask = {
             style: 'currency',
             currency: 'BRL'
         }).format(value / 100);
+    },
+    cpfCnpj(value) {
+        value = value.replace(/\D/g,'');
+
+        if (value.length > 14) {
+            value = value.slice(0, -1);
+        }
+
+        if(value.length > 11) {
+            value =  value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+        } else {
+            value =  value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+        }
+
+        return value;
+    },
+    cep(value) {
+        value = value.replace(/\D/g, '');
+
+        if (value.length > 8) {
+            value = value.slice(0, -1);
+        }
+
+        value = value.replace(/(\d{5})(\d)/, "$1-$2");
+
+        return value;
     }
 }
 
