@@ -31,7 +31,11 @@
         <input 
             type="password"
             name="password"
-            placeholder="Escolha uma senha segura"
+            {% if not user.id %}
+                placeholder="Escolha uma senha segura"
+            {% else %}
+                placeholder="Digite sua senha para atualizar seu cadastro."
+            {% endif %}
             required
         >
     </div>
@@ -58,7 +62,7 @@
             type="text"
             name="cpf_cnpj"
             placeholder="Digite seu documento"
-            placeholder="{{user.cpf_cnpj}}"
+            value="{{user.cpf_cnpj}}"
             onkeydown="Mask.apply(this, 'cpfCnpj')"
             onblur="Validate.apply(this, 'isCpfCnpj')"
             required
@@ -73,7 +77,7 @@
             type="text"
             name="cep"
             placeholder="01234-567"
-            placeholder="{{user.cep}}"
+            value="{{user.cep}}"
             onkeydown="Mask.apply(this, 'cep')"
             onblur="Validate.apply(this, 'isCep')"
             required
@@ -88,7 +92,7 @@
             type="text"
             name="address"
             placeholder="Digite seu endereço completo"
-            placeholder="{{user.address}}"
+            value="{{user.address}}"
             required
         >
     </div>

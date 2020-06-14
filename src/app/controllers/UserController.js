@@ -4,13 +4,18 @@ module.exports = {
     registerForm(req, res) {
         return res.render("user/register");
     },
-    show(req, res) {
-        return res.send('ok')
+    async show(req, res) {
+        const { user } = req;
+        return res.render('user/index', { user });
     },
     async post(req, res) {
+        const userId = await User.create(req.body);
 
-        const userId = await User.create(req.body)
+        req.session.userId = userId;
 
-        return res.redirect('/users')
+        return res.redirect('/users');
+    },
+    async update(req, res) {
+        
     }
 }
