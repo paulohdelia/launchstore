@@ -16,6 +16,27 @@ module.exports = {
         return res.redirect('/users');
     },
     async update(req, res) {
-        
+        try {
+            const { user } = req;
+            let { name, email, cpf_cnpj, cep, address } = req.body;
+
+            await User.update(user.id, {
+                name,
+                email,
+                cpf_cnpj,
+                cep,
+                address
+            });
+
+            return res.render('user/index', {
+                user: req.body,
+                success: 'Dados atualizados com sucesso!'
+            })
+        } catch(err) {
+            console.error(err);
+            return res.render('user/index', {
+                error: 'Ocorreu um erro!'
+            })
+        }
     }
 }

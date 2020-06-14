@@ -63,6 +63,8 @@ async function show(req, res, next) {
 
 async function update(req, res, next) {
 
+    const fillAllFields = checkAllFields(req.body);
+    
     if (fillAllFields) {
         return res.render('user/index', fillAllFields);
     }
