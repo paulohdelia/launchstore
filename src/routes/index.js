@@ -14,11 +14,11 @@ routes.use('/users', users);
 routes.use('/products', products);
 
 // Alias
-routes.get('/ads/create', function(req, res){s
+routes.get('/ads/create', function(req, res) {
     return res.redirect('/products/create');
 });
 
-routes.get('/accounts', function(req, res){
+routes.get('/accounts', function(req, res) {
     return res.redirect('/users/login');
 });
 
