@@ -3,7 +3,7 @@ const { hash } = require('bcryptjs');
 
 const User = require('../models/User');
 const Product = require('../models/Product');
-const { formatCep, formatCpfCpnj } = require('../../lib/utils');
+const { formatCep, formatCpfCnpj } = require('../../lib/utils');
 
 module.exports = {
     registerForm(req, res) {
@@ -14,7 +14,7 @@ module.exports = {
             const { user } = req;
 
             user.cep = formatCep(user.cep);
-            user.cpf_cnpj = formatCpfCpnj(user.cpf_cnpj);
+            user.cpf_cnpj = formatCpfCnpj(user.cpf_cnpj);
 
             return res.render('user/index', { user });
         } catch (error) {
@@ -73,17 +73,15 @@ module.exports = {
         try {
             const products = await Product.findAll({ where: { user_id: req.body.id } });
 
-            const allFilesPromise = products.map(product => {
-                Product.files(product.id);
-            });
+            const allFilesPromise = products.map(product => Product.files(product.id));
 
             let promiseResults = await Promise.all(allFilesPromise);
 
             await User.delete(req.body.id);
             req.session.destroy();
 
-            promiseResults.map(result => {
-                result.map(file => {
+            promiseResults.map(files => {
+                files.map(file => {
                     try {
                         unlinkSync(file.path);
                     } catch (error) {
@@ -92,8 +90,6 @@ module.exports = {
                 })
             })
 
-            await User.delete(req.body.id);
-            req.session.destroy();
             return res.render('session/login', {
                 success: 'Conta deletada!'
             });
