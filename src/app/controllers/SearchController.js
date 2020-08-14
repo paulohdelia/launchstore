@@ -1,12 +1,10 @@
-const { formatPrice } = require('../../lib/utils')
-
 const Product = require('../models/Product');
+const { format } = require('../services/LoadProducts');
 
 module.exports = {
     async index(req, res) {
         try {
-            let results,
-                params = {}
+            let params = {}
 
             const { filter, category } = req.query;
 
@@ -20,23 +18,7 @@ module.exports = {
 
             let products = await Product.search(params);
 
-            async function getImage(productId) {
-                let files = await Product.files(productId);
-                files = files.map(file => `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`)
-                let file = files[0]
-                try {
-                    // altera a url para funcionar com o style="background-image: url(...);")
-                    file = file.replace(/\\/g, '/')
-                } catch { }
-                return file
-            }
-
-            const productsPromise = products.map(async (product) => {
-                product.img = await getImage(product.id)
-                product.oldPrice = formatPrice(product.old_price)
-                product.price = formatPrice(product.price)
-                return product
-            })
+            const productsPromise = products.map(format)
 
             products = await Promise.all(productsPromise);
 

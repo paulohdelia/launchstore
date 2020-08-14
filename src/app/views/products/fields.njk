@@ -3,10 +3,7 @@
     <div>
         <select name="category_id">
             {% for category in categories %}
-                <option 
-                    value="{{category.id}}"
-                    {% if product.category_id == category.id %} selected {% endif %}
-                >
+                <option value="{{category.id}}" {% if product.category_id == category.id %} selected="selected" {% endif %}>
                     {{category.name}}
                 </option>
             {% endfor %}
@@ -17,12 +14,7 @@
 <div class="item">
     <div>Título</div>
     <div>
-        <input 
-            type="text"
-            name="name"
-            placeholder="Digite o Título do Anúncio"
-            value="{{product.name}}"
-        >
+        <input type="text" name="name" placeholder="Digite o Título do Anúncio" value="{{product.name}}">
     </div>
 </div>
 
@@ -36,26 +28,16 @@
 <div class="item">
     <div>Fotos</div>
     <div id="photos-upload">
-        <input
-            id="photos-input"
-            type="file"
-            name="photos"
-            multiple
-            accept="image/*"  
-            onchange="PhotosUpload.handleFileInput(event)
-            "  
-        >
+        <input id="photos-input" type="file" name="photos" multiple="multiple" accept="image/*" onchange="PhotosUpload.handleFileInput(event)
+            ">
         <p>Selecione até 6 fotos</p>
     </div>
     <div id="photos-preview">
-        {% if files %}
-            {% for image in files %}
+        {% if product.files %}
+            {% for image in product.files %}
                 <div class="photo" id="{{image.id}}">
                     <img src="{{image.src}}" alt="{{image.name}}">
-                    <i 
-                        class="material-icons"
-                        onclick="PhotosUpload.removeOldPhoto(event)"
-                    >
+                    <i class="material-icons" onclick="PhotosUpload.removeOldPhoto(event)">
                         delete_forever
                     </i>
                 </div>
@@ -63,34 +45,23 @@
             <input type="hidden" name="removed_files">
         {% endif %}
     </div>
-    
+
 </div>
 
 <div class="item">
     <div>Valor</div>
     <div>
-        <input 
-            type="text"
-            name="price"
-            placeholder="Preço do Produto"
-            value="{{product.price}}"
-            onkeydown="Mask.apply(this, 'formatBRL')"
-        >
+        <input type="text" name="price" placeholder="Preço do Produto" value="{{product.formattedPrice}}" onkeydown="Mask.apply(this, 'formatBRL')">
     </div>
     {% if product.old_price %}
-        <input type="hidden" name="old_price" value={{product.old_price}}>
+        <input type="hidden" name="old_price" value="{{product.formattedOldPrice}}">
     {% endif %}
 </div>
 
 <div class="item">
     <div>Quantidade</div>
     <div>
-        <input 
-            type="number"
-            name="quantity"
-            placeholder="Estoque Disponível"
-            value={{product.quantity}}
-        >
+        <input type="number" name="quantity" placeholder="Estoque Disponível" value="{{product.quantity}}">
     </div>
 </div>
 
@@ -99,25 +70,11 @@
         <div>Disponível ?</div>
         <div>
             <span>
-                <input 
-                    type="radio"
-                    name="status"
-                    value="1"
-                    {% if product.status == '1' %}
-                        checked
-                    {% endif %}
-                >
+                <input type="radio" name="status" value="1" {% if product.status == '1' %} checked="checked" {% endif %}>
                 Sim
             </span>
             <span>
-                <input 
-                    type="radio"
-                    name="status"
-                    value="0"
-                    {% if product.status == '0' %}
-                        checked
-                    {% endif %}
-                > 
+                <input type="radio" name="status" value="0" {% if product.status == '0' %} checked="checked" {% endif %}>
                 Não
             </span>
         </div>
