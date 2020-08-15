@@ -1,47 +1,21 @@
-const { formatPrice } = require('../../lib/utils')
-
 const Product = require('../models/Product');
+const { format } = require('../services/LoadProducts');
 
 module.exports = {
     async index(req, res) {
         try {
-            let results,
-            params = {}
+            let { filter, category } = req.query;
 
-            const { filter, category } = req.query;
+            if (!filter || filter.toLowerCase() == 'toda a loja') filter = null;
 
-            if(!filter) return res.redirect('/');
+            let products = await Product.search({ filter, category });
 
-            params.filter = filter;
+            const productsPromise = products.map(format)
 
-            if (category) {
-                params.category = category;
-            }
-
-            results = await Product.search(params);
-
-            async function getImage(productId) {
-                const results = await Product.files(productId);
-                const files = results.rows.map(file => `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`)
-                let file = files[0]
-                try {
-                    // altera a url para funcionar com o style="background-image: url(...);")
-                    file = files[0].replace(/\\/g, '/')
-                } catch {}
-                return file
-            }
-    
-            const productsPromise = results.rows.map(async ( product ) => {
-                product.img = await getImage(product.id)
-                product.oldPrice = formatPrice(product.old_price)
-                product.price = formatPrice(product.price)
-                return product
-            })
-            
-            const products = await Promise.all(productsPromise);
+            products = await Promise.all(productsPromise);
 
             const search = {
-                term: req.query.filter,
+                term: filter || 'Toda a loja',
                 total: products.length
             }
 
@@ -59,7 +33,7 @@ module.exports = {
             }, []);
 
             return res.render('search/index', { products, search, categories })
-        } catch (err) { 
+        } catch (err) {
             console.error(err)
         }
     }
