@@ -1,11 +1,11 @@
 const Mask = {
     apply(input, func) {
-        setTimeout(function() {
+        setTimeout(function () {
             input.value = Mask[func](input.value)
         }, 1);
     },
     formatBRL(value) {
-        value = value.replace(/\D/g,'');
+        value = value.replace(/\D/g, '');
 
         return new Intl.NumberFormat('pt-BR', {
             style: 'currency',
@@ -13,16 +13,16 @@ const Mask = {
         }).format(value / 100);
     },
     cpfCnpj(value) {
-        value = value.replace(/\D/g,'');
+        value = value.replace(/\D/g, '');
 
         if (value.length > 14) {
             value = value.slice(0, -1);
         }
 
-        if(value.length > 11) {
-            value =  value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+        if (value.length > 11) {
+            value = value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
         } else {
-            value =  value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+            value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
         }
 
         return value;
@@ -48,10 +48,10 @@ const PhotosUpload = {
     handleFileInput(event) {
         const { files: fileList } = event.target;
         PhotosUpload.input = event.target;
-        
+
         if (PhotosUpload.hasLimit(event)) return
 
-        Array.from(fileList).forEach( file => {
+        Array.from(fileList).forEach(file => {
 
             PhotosUpload.files.push(file)
 
@@ -72,10 +72,10 @@ const PhotosUpload = {
         PhotosUpload.input.files = PhotosUpload.getAllFiles();
     },
     hasLimit(event) {
-        const { uploadLimit, input, preview} = PhotosUpload;
+        const { uploadLimit, input, preview } = PhotosUpload;
         const { files: fileList } = input;
 
-        if(fileList.length > uploadLimit) {
+        if (fileList.length > uploadLimit) {
             alert(`Envie no máximo ${uploadLimit} fotos`)
             event.preventDefault();
             return true;
@@ -106,15 +106,15 @@ const PhotosUpload = {
     },
     getDivImage(image) {
         const div = document.createElement('div');
-            div.classList.add('photo');
+        div.classList.add('photo');
 
-            div.onclick = PhotosUpload.removePhoto;
+        div.onclick = PhotosUpload.removePhoto;
 
-            div.appendChild(image);
+        div.appendChild(image);
 
-            div.appendChild(PhotosUpload.getRemoveButton());
+        div.appendChild(PhotosUpload.getRemoveButton());
 
-            return div;
+        return div;
     },
     getRemoveButton() {
         const button = document.createElement('i');
@@ -137,7 +137,7 @@ const PhotosUpload = {
 
         if (photoDiv.id) {
             const removedFiles = document.querySelector('input[name="removed_files"');
-            if(removedFiles) {
+            if (removedFiles) {
                 removedFiles.value += `${photoDiv.id},`
             }
         }
@@ -150,7 +150,7 @@ const ImageGallery = {
     previews: document.querySelectorAll('.gallery-preview img'),
     highlight: document.querySelector('.gallery .highlight > img'),
     setImage(event) {
-        const {target} = event;
+        const { target } = event;
 
         ImageGallery.previews.forEach(preview => preview.classList.remove('active'));
         target.classList.add('active');
@@ -199,7 +199,7 @@ const Validate = {
         const div = document.createElement('div');
         div.classList.add('error');
         div.innerHTML = error;
-        input.parentNode.appendChild(div);    
+        input.parentNode.appendChild(div);
         input.focus();
     },
     isEmail(value) {
@@ -212,7 +212,7 @@ const Validate = {
         }
 
         return {
-            error, 
+            error,
             value
         };
     },
@@ -221,14 +221,14 @@ const Validate = {
 
         const cleanValues = value.replace(/\D/g, '');
 
-        if(cleanValues.length > 11 && cleanValues.length !== 14) {
+        if (cleanValues.length > 11 && cleanValues.length !== 14) {
             error = 'CPNJ inválido';
         } else if (cleanValues.length < 12 && cleanValues.length !== 11) {
             error = 'CPF incorreto';
         }
 
         return {
-            error, 
+            error,
             value
         };
     },
@@ -237,13 +237,29 @@ const Validate = {
 
         const cleanValues = value.replace(/\D/g, '');
 
-        if(cleanValues.length !== 8) {
+        if (cleanValues.length !== 8) {
             error = 'CEP inválido';
-        } 
+        }
 
         return {
-            error, 
+            error,
             value
         };
     },
+    allFields(event) {
+        const items = document.querySelectorAll('.item input, .item select, .item textarea')
+
+        for (item of items) {
+            if (item.value == "") {
+                const message = document.createElement('div')
+                message.classList.add('messages')
+                message.classList.add('error')
+                message.style.position = 'fixed'
+                message.innerHTML = 'Todos os campos são obrigatórios.'
+                document.querySelector('body').append(message)
+
+                event.preventDefault();
+            }
+        }
+    }
 }

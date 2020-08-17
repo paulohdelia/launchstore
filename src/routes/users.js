@@ -4,13 +4,13 @@ const routes = express.Router();
 const SessionController = require('../app/controllers/SessionController');
 const UserController = require('../app/controllers/UserController');
 
-const UserValidator = require('../app/validators/users');
+const UserValidator = require('../app/validators/user');
 const SessionValidator = require('../app/validators/session');
 
 const { isLoggedRedirectToUsers } = require('../app/middlewares/session');
 
 // // Login/Logout
-routes.get('/login' , isLoggedRedirectToUsers, SessionController.loginForm);
+routes.get('/login', isLoggedRedirectToUsers, SessionController.loginForm);
 routes.post('/login', SessionValidator.login, SessionController.login);
 routes.post('/logout', SessionController.logout);
 
