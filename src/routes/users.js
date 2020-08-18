@@ -28,4 +28,6 @@ routes.get('/', UserValidator.show, UserController.show);
 routes.put('/', UserValidator.update, UserController.update);
 routes.delete('/', UserController.delete);
 
+routes.get('/ads', UserController.ads);
+
 module.exports = routes;

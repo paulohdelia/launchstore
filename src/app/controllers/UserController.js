@@ -1,6 +1,7 @@
 const { unlinkSync } = require('fs');
 const { hash } = require('bcryptjs');
 
+const LoadProductsService = require('../services//LoadProducts');
 const User = require('../models/User');
 const Product = require('../models/Product');
 const { formatCep, formatCpfCnpj } = require('../../lib/utils');
@@ -100,5 +101,12 @@ module.exports = {
                 error: 'Erro ao tentar deletar a conta!'
             });
         }
+    },
+    async ads(req, res) {
+        const products = await LoadProductsService.load('products', {
+            where: { user_id: req.session.userId }
+        })
+
+        return res.render('user/ads', { products });
     }
 }
