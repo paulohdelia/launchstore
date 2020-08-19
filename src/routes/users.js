@@ -31,6 +31,6 @@ routes.delete('/', UserController.delete);
 
 routes.get('/ads', UserController.ads);
 
-routes.post('/order', isUser, OrderController.post)
+routes.post('/order', isUser, OrderController.post);
 
 module.exports = routes;

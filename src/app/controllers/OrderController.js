@@ -50,7 +50,7 @@ module.exports = {
       return res.render('orders/success')
     } catch (error) {
       console.error(error);
-      return res.render('orders/success')
+      return res.render('orders/error')
     }
   }
 }

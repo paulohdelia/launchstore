@@ -162,3 +162,12 @@
 .product-create {
   max-width: 700px;
 }
+
+.product-single .unavailable {
+  font-size: 14px;
+  font-weight: bold;
+  color: #CCCCCC;
+  background-color: #EEEEEE;
+
+  padding: 8px 16px;
+}
