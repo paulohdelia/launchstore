@@ -77,3 +77,7 @@
   font-weight: bold;
   text-decoration: underline;
 }
+
+.users-edit {
+  max-width: 700px;
+}
