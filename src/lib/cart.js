@@ -17,7 +17,7 @@ const Cart = {
     return this;
   },
   addOne(product) {
-    let inCart = this.items.find(item => item.product.id == product.id);
+    const inCart = this.getCartItem(product.id)
 
     if (!inCart) {
       inCart = {
@@ -46,7 +46,7 @@ const Cart = {
     return this
   },
   removeOne(productId) {
-    const inCart = this.items.find(item => item.product.id == productId)
+    const inCart = this.getCartItem(productId);
 
     if (!inCart) return this;
 
@@ -61,12 +61,15 @@ const Cart = {
     if (inCart.quantity < 1) {
       // const itemIndex = this.items.indexOf(inCart);
       // this.items.splice(itemIndex, 1);
-      this.items = this.items.filter(item => item.product.id != productId)
+      this.items = this.items.filter(item => item.product.id != productId);
     }
 
     return this
   },
   delete(productId) { },
+  getCartItem(productId) {
+    return this.items.find(item => item.product.id == productId)
+  }
 }
 
 const product = {
